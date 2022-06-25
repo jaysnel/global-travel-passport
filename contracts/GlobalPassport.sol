@@ -6,32 +6,32 @@ import "hardhat/console.sol";
 contract GlobalPassport {
     uint256 totalPassportCount;
 
-    event EmitPassportHolder(uint256 id, string identityVerification, int[] previousIds);
+    event EmitPassportHolderBio(uint256 id, string identityVerification, int[] previousId);
 
-    struct passportHolder {
+    struct PassportHolderBio {
         uint256 id;
         string identityVerification;
-        int[] previousIds;
+        int[] previousId;
     }
-
-    passportHolder[] citizen;
+    
+    PassportHolderBio[] citizenBio;
+    
 
     constructor() payable {
         console.log('Global Passport Contract Started.');
     }
 
-    function createNewPassport(uint256 id, string memory identityVerification, int[] memory previousIds) public {
-        console.log(id, identityVerification);
-        citizen.push(passportHolder(id, identityVerification, previousIds));
+    function createNewPassport(uint256 id, string memory identityVerification, int[] memory previousId) public {
+        citizenBio.push(PassportHolderBio(id, identityVerification, previousId));
 
-        emit EmitPassportHolder(id, identityVerification, previousIds);
+        emit EmitPassportHolderBio(id, identityVerification, previousId);
     }
 
     function updatePassport() public view {
         console.log('Update Passport');
     }
 
-    function getCitizens() public view returns (passportHolder[] memory) {
-        console.log('Citizens');
+    function getCitizens() public view returns (PassportHolderBio[] memory){
+        return citizenBio;
     }
 }

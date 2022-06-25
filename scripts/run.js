@@ -1,6 +1,9 @@
 async function main() {
     const GlobalPassport = await hre.ethers.getContractFactory("GlobalPassport");
     const globalPassportContract = await GlobalPassport.deploy();
+    const bigNumberToNumber = (bigNumber) => {
+      return ethers.BigNumber.from(bigNumber).toNumber()
+    }
     
     await globalPassportContract.deployed();
 
@@ -49,11 +52,9 @@ async function main() {
   //     ]
   // }
 
-    await globalPassportContract.createNewPassport(1234, 'asdf90903r356330)(($', [
-      {country: 'United States', signature: 'USA-123456', date: 'timestamp'},
-      {country: 'Colombia',signature: 'COL-123456', date: 'timestamp'}
-      ]);
-    await globalPassportContract.getCitizens();
+    await globalPassportContract.createNewPassport(1234, 'abcd123', [1234, 7890]); // encrypted bit of info tied to indivdual. Maybe biological. Or maybe dont even need)
+    const citizenData = await globalPassportContract.getCitizens();
+    console.log(bigNumberToNumber(citizenData[0][2][0]))
 }
 
 main()
