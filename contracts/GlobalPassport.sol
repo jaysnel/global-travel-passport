@@ -6,32 +6,40 @@ import "hardhat/console.sol";
 contract GlobalPassport {
     uint256 totalPassportCount;
 
-    event EmitPassportHolderBio(uint256 id, string identityVerification, int[] previousId);
+    event EmitPassportInfo(uint256 id, string identityVerification, int[] previousId, string name, string issued, string expiration, string verifiyer, string dob, string photo, string lastUpdated, string[] citizenship);
 
-    struct PassportHolderBio {
+    struct PassportInfo {
         uint256 id;
         string identityVerification;
         int[] previousId;
+        string name;
+        string issued;
+        string expiration;
+        string verifiyer;
+        string dob;
+        string photo;
+        string lastUpdated;
+        type[] citizenship;
     }
     
-    PassportHolderBio[] citizenBio;
+    PassportInfo[] citizen;
     
 
     constructor() payable {
         console.log('Global Passport Contract Started.');
     }
 
-    function createNewPassport(uint256 id, string memory identityVerification, int[] memory previousId) public {
-        citizenBio.push(PassportHolderBio(id, identityVerification, previousId));
+    function createNewPassport(uint256 id, string memory identityVerification, int[] memory previousId, string memory name, string memory issued, string memory expiration, string memory verifiyer, string memory dob, string memory photo, string memory lastUpdated, string[] memory citizenship) public {
+        citizen.push(PassportInfo(id, identityVerification, previousId, name, issued, expiration, verifiyer, dob, photo, lastUpdated, citizenship));
 
-        emit EmitPassportHolderBio(id, identityVerification, previousId);
+        emit EmitPassportInfo(id, identityVerification, previousId, name, issued, expiration, verifiyer, dob, photo, lastUpdated, citizenship);
     }
 
     function updatePassport() public view {
         console.log('Update Passport');
     }
 
-    function getCitizens() public view returns (PassportHolderBio[] memory){
-        return citizenBio;
+    function getCitizens() public view returns (PassportInfo[] memory){
+        return citizen;
     }
 }
