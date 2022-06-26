@@ -29,32 +29,14 @@ async function main() {
       photo: 'asdfac.png', // maybe needs to be formated in a different way
       lastUpdated: timestamp,
       citizenship: [
-          {
-              country: 'United States',
-              signature: 'USA-123456', // global country code known to everyone
-              date: timestamp
-          },
-          {
-              country: 'Colombia',
-              signature: 'COL-123456', // global country code known to everyone
-              date: timestamp
-          },
-      ],
-      // status: [{
-      //     verified: true,
-      //     wanted: false
-      // }],
-      // visited: [
-      //     {
-      //         country: 'colombia',
-      //         dateStart: timestamp,
-      //         dateEnd: timestamp,
-      //         countrySignature: 'CO123456' // mix of country code, employee id?
-      //     }
-      // ]
+        '{ "country": "United States", "signature": "USA-123456", "date": "timestamp" }',
+        '{ "country": "Colombia", "signature": "COL-123456", "date": "timestamp" }',
+    ],
+      status: ['{ "verified": true, "wanted": false }'],
+      visited: ['{ country: "colombia", dateStart: timestamp, dateEnd: timestamp, countrySignature: "CO123456" }']
   }
 
-    await globalPassportContract.createNewPassport(
+    await globalPassportContract.createPassportBio(
       person.id, 
       person.identityVerification, 
       person.previousId, 
@@ -63,11 +45,18 @@ async function main() {
       person.expiration, 
       person.verifiyer,
       person.dob,
-      person.photo,
+      person.photo)
+    const citizenBio = await globalPassportContract.getPassportBio();
+    console.log(await citizenBio)
+
+    await globalPassportContract.createPassportInfo(
       person.lastUpdated,
-      person.citizenship)
-    const citizenData = await globalPassportContract.getCitizens();
-    console.log(citizenData[0])
+      person.citizenship,
+      person.status,
+      person.visited
+    )
+    const citizenInfo = await globalPassportContract.getPassportInfo();
+    console.log(await citizenInfo)
 }
 
 main()

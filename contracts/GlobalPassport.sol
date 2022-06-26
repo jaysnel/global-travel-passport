@@ -6,9 +6,10 @@ import "hardhat/console.sol";
 contract GlobalPassport {
     uint256 totalPassportCount;
 
-    event EmitPassportInfo(uint256 id, string identityVerification, int[] previousId, string name, string issued, string expiration, string verifiyer, string dob, string photo, string lastUpdated, string[] citizenship);
+    event EmitPassportBio(uint256 id, string identityVerification, int[] previousId, string name, string issued, string expiration, string verifiyer, string dob, string photo);
+    event EmitPassportInfo(string lastUpdated, string[] citizenship, string[] status, string[] visited);
 
-    struct PassportInfo {
+    struct PassportBio {
         uint256 id;
         string identityVerification;
         int[] previousId;
@@ -18,28 +19,38 @@ contract GlobalPassport {
         string verifiyer;
         string dob;
         string photo;
+    }
+
+    struct PassportInfo {
         string lastUpdated;
-        type[] citizenship;
+        string[] citizenship;
+        string[] status;
+        string[] visited;
     }
     
-    PassportInfo[] citizen;
+    PassportBio[] citizenBio;
+    PassportInfo[] citizenInfo;
     
 
     constructor() payable {
         console.log('Global Passport Contract Started.');
     }
 
-    function createNewPassport(uint256 id, string memory identityVerification, int[] memory previousId, string memory name, string memory issued, string memory expiration, string memory verifiyer, string memory dob, string memory photo, string memory lastUpdated, string[] memory citizenship) public {
-        citizen.push(PassportInfo(id, identityVerification, previousId, name, issued, expiration, verifiyer, dob, photo, lastUpdated, citizenship));
-
-        emit EmitPassportInfo(id, identityVerification, previousId, name, issued, expiration, verifiyer, dob, photo, lastUpdated, citizenship);
+    // Passport Bio
+    function createPassportBio(uint256 _id, string memory _identityVerification, int[] memory _previousId, string memory _name, string memory _issued, string memory _expiration, string memory _verifiyer, string memory _dob, string memory _photo) public {
+        citizenBio.push(PassportBio(_id, _identityVerification, _previousId, _name, _issued, _expiration, _verifiyer, _dob, _photo));
+        emit EmitPassportBio(_id, _identityVerification, _previousId, _name, _issued, _expiration, _verifiyer, _dob, _photo);
+    }
+    function getPassportBio() public view returns (PassportBio[] memory){
+        return citizenBio;
     }
 
-    function updatePassport() public view {
-        console.log('Update Passport');
+    // Passport Info
+    function createPassportInfo(string memory _lastUpdated, string[] memory _citizenship, string[] memory _status, string[] memory _visited) public {
+        citizenInfo.push(PassportInfo(_lastUpdated, _citizenship, _status, _visited));
+        emit EmitPassportInfo(_lastUpdated, _citizenship, _status, _visited);
     }
-
-    function getCitizens() public view returns (PassportInfo[] memory){
-        return citizen;
+    function getPassportInfo() public view returns (PassportInfo[] memory){
+        return citizenInfo;
     }
 }
