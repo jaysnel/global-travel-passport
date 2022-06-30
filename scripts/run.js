@@ -30,21 +30,23 @@ async function main() {
         verifiyer: 'USA-USPS-12356abcd', // ID of entity that did original verification when signing up the first time
         dob: '1/24/1994',
         photo: 'asdfac.png', // maybe needs to be formated in a different way
+        citizenship: [
+          { country: 'United States', signature: 'USA-123456', date: 'timestamp' },
+          { country: 'Colombia', signature: 'COL-123456', date: 'timestamp' },
+            ]
       }
     ],
     citizenInfo: [
       {
         lastUpdated: timestamp,
-        citizenship: [
-          { country: 'United States', signature: 'USA-123456', date: 'timestamp' },
-          { country: 'Colombia', signature: 'COL-123456', date: 'timestamp' },
-            ],
         status: [{ verified: true, wanted: false }],
         visited: [{ country: 'colombia', dateStart: timestamp, dateEnd: timestamp, countrySignature: 'CO123456' }]
       }
     ]
 }
 
+// Goes through the object and turns each value into an array of strings
+// to send to contract
 function stringifyObjects(item) {
   const currentObject = item;
   const objectValues = Object.values(currentObject);
